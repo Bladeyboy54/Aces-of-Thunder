@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "aot",
+    "name": "Aces of Thunder",
     "slug": "aot",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/icon2.png",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash3.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#2F2F2F"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/adaptive-icon2.png",
         "backgroundColor": "#ffffff"
       }
     },
