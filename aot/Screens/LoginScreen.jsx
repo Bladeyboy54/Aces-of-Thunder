@@ -2,18 +2,32 @@ import React, {useState} from "react";
 import { View, Text, StyleSheet, TextInput, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { handleLogin } from "../services/authService";
 
 TouchableOpacity.defaultProps = { activeOpacity: 0.5 };
 
-const LoginButton = ({ onPress, title }) => (
-    <TouchableOpacity onPress={onPress} style={styles.submitBtnContainer}>
-        <Text style={styles.submitBtn}>{title}</Text>
-    </TouchableOpacity>
-);
+
 
 const LoginScreen = ({navigation}) => {
 
     const [isChecked, setChecked] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const login = async () => {
+        const success = await handleLogin( email, password )
+        if (success) {
+            navigation.navigate('Home');
+        } else {
+            console.log("Error on login")
+        }
+    }
+
+    const LoginButton = ({ onPress, title }) => (
+        <TouchableOpacity onPress={login} style={styles.submitBtnContainer}>
+            <Text style={styles.submitBtn}>{title}</Text>
+        </TouchableOpacity>
+    );
 
     return (
         
@@ -38,6 +52,7 @@ const LoginScreen = ({navigation}) => {
                                 placeholder = "email@example.com"
                                 placeholderTextColor={'#CFD8DC'}
                                 keyboardType="email-address"
+                                onChangeText={newText => setEmail(newText)}
                             />
                         </View>
                         <View style = {styles.inputContainer}>
@@ -46,7 +61,7 @@ const LoginScreen = ({navigation}) => {
                                 style = {styles.inputField}
                                 secureTextEntry = {true}
                                 placeholderTextColor={'#CFD8DC'}
-                                
+                                onChangeText={newText => setPassword(newText)}
                             />
                         </View>
                         <View style = {styles.loginBox}>
@@ -65,7 +80,7 @@ const LoginScreen = ({navigation}) => {
                         <LoginButton title={"LOG IN"}/>
                         <Text 
                             style={styles.footerText}
-                            onPress={() => navigation.navigate('SignUp')}
+                            onPress={() => navigation.navigate('Register')}
                         >
                             Don't Have Account?
                             <Text style={styles.signup}>  
