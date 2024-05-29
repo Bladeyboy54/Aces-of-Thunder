@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import LoginScreen from './Screens/LoginScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
@@ -34,7 +34,7 @@ const getSignedIn = () => {
   return loggedIn
 }
 
-const Tab = createBottomTabNavigator()
+const Tab = createMaterialBottomTabNavigator()
 
 export default function App() {
 
@@ -44,8 +44,26 @@ export default function App() {
     <NavigationContainer>
       
       {isSignedIn ? (
-        <Tab.Navigator>
-          <Tab.Screen options={{ headerShown:false }} name="Home" component={HomeScreen} />
+        <Tab.Navigator
+          barStyle={{backgroundColor: '#171717'}} 
+          initialRouteName='Home'
+          activeColor='#E53935'
+          labeled={false}
+          
+        >
+          <Tab.Screen 
+            options={{ 
+              headerShown: false,
+              tabBarIcon: ({ focused }) => (
+                <View>
+                  <Image source={require('../aot/assets/icons/Home.png')} resizeMode='cover'/>
+                </View>
+              ),
+            }} 
+            name="Home" 
+            component={HomeScreen} 
+
+          />
           <Tab.Screen options={{ headerShown: false }} name="Leaderboard" component={LeaderboardScreen} />
           <Tab.Screen options={{ headerShown: false }} name="Add New Score" component={NewScoreScreen} />
         </Tab.Navigator>
@@ -69,4 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  tabContainer: {
+    backgroundColor: 'red',
+  }
 });
