@@ -11,6 +11,7 @@ import RegisterScreen from './Screens/RegisterScreen';
 import HomeScreen from './Screens/HomeScreen';
 import LeaderboardScreen from './Screens/LeaderboardScreen';
 import NewScoreScreen from './Screens/NewScoreScreen';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 
@@ -34,7 +35,7 @@ const getSignedIn = () => {
   return loggedIn
 }
 
-const Tab = createMaterialBottomTabNavigator()
+const Tab = createBottomTabNavigator()
 
 export default function App() {
 
@@ -55,17 +56,34 @@ export default function App() {
             options={{ 
               headerShown: false,
               tabBarIcon: ({ focused }) => (
-                <View>
                   <Image source={require('../aot/assets/icons/Home.png')} resizeMode='cover'/>
-                </View>
-              ),
+              )
             }} 
             name="Home" 
             component={HomeScreen} 
 
           />
-          <Tab.Screen options={{ headerShown: false }} name="Leaderboard" component={LeaderboardScreen} />
-          <Tab.Screen options={{ headerShown: false }} name="Add New Score" component={NewScoreScreen} />
+          <Tab.Screen 
+            options={{ 
+              headerShown: false,
+              tabBarIcon: ({ focused }) => (
+                <Image source={require('../aot/assets/icons/Leaderboard.png')} resizeMode='cover'/>
+              )
+            }} 
+            name="Leaderboard" 
+            component={LeaderboardScreen} 
+          
+          />
+          <Tab.Screen 
+            options={{ 
+              headerShown: false,
+              tabBarIcon: ({ focused }) => (
+                <Image source={require('../aot/assets/icons/addNew.png')} resizeMode='cover'/>
+              )
+            }} 
+            name="Add New Score" 
+            component={NewScoreScreen} 
+            />
         </Tab.Navigator>
           
         

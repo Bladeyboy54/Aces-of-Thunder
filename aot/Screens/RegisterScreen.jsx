@@ -1,13 +1,46 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image } from 'react-native'
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { auth, db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { handleRegester } from "../services/authService";
 
 
 const RegisterScreen = ({ navigation }) => {
 
+    const [gailinId, setGaijinId] = useState('')
+    const [gamerTag, setGamerTag] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-    const LoginButton = ({ onPress, title }) => (
-        <TouchableOpacity onPress={onPress} style={styles.submitBtnContainer}>
+    const regester = () => {
+        handleRegester( email, password)
+            .then(async (response) => {
+                const userid = response.user.uid
+                console.log('This is the UID ==> ', userid)
+                setTimeout(() => {
+                    navigation.navigate('Home')
+                }, 3000)
+                try {
+                    await setDoc(doc(db, "users", userid), {
+                        gaijinId: gailinId,
+                        gamerTag: gamerTag,
+                        fullName: '',
+                        profileImg: '',
+                        playerLevel: ''
+                    })
+                } catch (e) {
+                    console.error(" Error Adding document ==> ", e)
+                }
+            })
+            .catch((error) => {
+                console.log('Error Registering User ==> ', error)
+            })
+    }
+
+    const RegesterButton = ({ onPress, title }) => (
+        <TouchableOpacity onPress={regester} style={styles.submitBtnContainer}>
             <Text style={styles.submitBtn}>{title}</Text>
         </TouchableOpacity>
     );
@@ -37,7 +70,7 @@ const RegisterScreen = ({ navigation }) => {
                             placeholder = "000000000"
                             placeholderTextColor={'#CFD8DC'}
                             keyboardType="number-pad"
-                            // onChangeText={newText => setEmail(newText)}
+                            onChangeText={newText => setGaijinId(newText)}
                         />
                     </View>
                     <View style = {styles.inputContainer}>
@@ -47,7 +80,7 @@ const RegisterScreen = ({ navigation }) => {
                             placeholder = "CheeseMaster355"
                             placeholderTextColor={'#CFD8DC'}
                             keyboardType="default"
-                            // onChangeText={newText => setEmail(newText)}
+                            onChangeText={newText => setGamerTag(newText)}
                         />
                     </View>
                     <View style = {styles.inputContainer}>
@@ -57,7 +90,7 @@ const RegisterScreen = ({ navigation }) => {
                             placeholder = "email@example.com"
                             placeholderTextColor={'#CFD8DC'}
                             keyboardType="email-address"
-                            // onChangeText={newText => setEmail(newText)}
+                            onChangeText={newText => setEmail(newText)}
                         />
                     </View>
                     <View style = {styles.inputContainer}>
@@ -67,12 +100,12 @@ const RegisterScreen = ({ navigation }) => {
                             placeholder = "Must have at least 6 characters"
                             placeholderTextColor={'#CFD8DC'}
                             keyboardType="default"
-                            // onChangeText={newText => setEmail(newText)}
+                            onChangeText={newText => setPassword(newText)}
                         />
                     </View>
                 </View>
                 <View style = {styles.btnMainBox}>
-                    <LoginButton title={"Sign Up"}/>
+                    <RegesterButton title={"Sign Up"}/>
                     <Text 
                         style={styles.footerText}
                         onPress={() => navigation.navigate('Login')}

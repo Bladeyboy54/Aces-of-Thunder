@@ -26,7 +26,7 @@ const HomeScreen = () => {
           </View>
           <View style={styles.mainImageContainer}>
             <Image 
-              source={require('../assets/img/tiger2.png')} // Replace with actual image URL
+              source={require('../assets/img/tiger2.png')} 
               style={styles.mainImage}
             />
               <View style={styles.statsOverlay}>

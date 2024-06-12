@@ -1,10 +1,11 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import {Image, ImageBackground, StyleSheet, Text, View, TextInput} from 'react-native';
+import {Image, ImageBackground, StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { addScore } from '../services/FirestoreService';
 
 const battleRating = [
   { label: '1.0', value: '1.0' },
@@ -43,13 +44,48 @@ const battleRating = [
 ];
 
 const battleType = [
-  { label: '1v1', value: '1v1' },
+  { label: 'Air Arcade Battle', value: 'AAB' },
+  { label: 'Air Realistc Battle', value: 'ARB' },
+  { label: 'Ground Arcade Battle', value: 'GAB' },
+  { label: 'Ground Realistic Battle', value: 'GRB' },
+  { label: 'Naval Arcade Battle', value: 'NAB' },
+  { label: 'Naval Realistic Battle', value: 'NRB' },
+  { label: 'Simulation Battle', value: 'SB'}
 ]
 
 const NewScoreScreen = () => {
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState("");
+  const [battleTypeValue, setBattleTypeValue] = useState("");
+  const [battleRatingValue, setBattleRatingValue] = useState("");
+  const [battleScore, setBattleScore] = useState("");
+  const [replayNo, setReplayNo] = useState("");
+  const [sessionScreenshot, setSessionScreenshot] = useState("");
+
   const [isFocus, setIsFocus] = useState(false);
+
+  const SubmitButton = ({ onPress, title }) => (
+    <TouchableOpacity onPress={handleScoreSub} style={styles.submitBtnContainer}>
+        <Text style={styles.submitBtn}>{title}</Text>
+    </TouchableOpacity>
+  );
+
+  const handleScoreSub = async () => {
+
+    var score = {
+      battleType: battleTypeValue,
+      battleRating: battleRatingValue,
+      score: battleScore,
+      replayNo: replayNo,
+      battleSC: sessionScreenshot
+    }
+
+    var success = await addScore(userId, score)
+
+    if(success) {
+      Alert.alert("Score submitted successfully!");
+    }
+  }
 
   return (
       <KeyboardAwareScrollView
@@ -102,7 +138,7 @@ const NewScoreScreen = () => {
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={item => {
-                setValue(item.value);
+                setBattleTypeValue(item.value);
                 setIsFocus(false);
               }}
               renderLeftIcon={() => (
@@ -140,7 +176,7 @@ const NewScoreScreen = () => {
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={item => {
-                setValue(item.value);
+                setBattleRatingValue(item.value);
                 setIsFocus(false);
               }}
               renderLeftIcon={() => (
@@ -155,7 +191,7 @@ const NewScoreScreen = () => {
             />
           </View>
           {/* //////////////////////// FIX THIS SECTION /////////////////////// */}
-          {/* <---------------------Battle Rating Input----------------------> */}
+          {/* <---------------------Battle Score Input----------------------> */}
           <View style = {styles.inputTopTextContainer}>
             <Text style = {styles.inputTopText}>Score</Text>
           </View>
@@ -165,10 +201,10 @@ const NewScoreScreen = () => {
               placeholder = "0000"
               placeholderTextColor={'#CFD8DC'}
               keyboardType='decimal-pad'
-              // onChangeText={newText => setEmail(newText)}
+              onChangeText={newText => setBattleScore(newText)}
             />
           </View>
-          {/* <---------------------Battle Rating Input----------------------> */}
+          {/* <---------------------Battle Replay No. Input----------------------> */}
           <View style = {styles.inputTopTextContainer}>
             <Text style = {styles.inputTopText}>Replay no.</Text>
           </View>
@@ -178,10 +214,10 @@ const NewScoreScreen = () => {
               placeholder = "0000"
               placeholderTextColor={'#CFD8DC'}
               keyboardType='decimal-pad'
-              // onChangeText={newText => setEmail(newText)}
+              onChangeText={newText => setReplayNo(newText)}
             />
           </View>
-          {/* <---------------------Battle Rating Input----------------------> */}
+          {/* <---------------------Battle Session Screenshot Input----------------------> */}
           <View style = {styles.inputTopTextContainer}>
             <Text style = {styles.inputTopText}>Session Screenshot</Text>
           </View>
@@ -191,10 +227,13 @@ const NewScoreScreen = () => {
                 placeholder = "https://"
                 placeholderTextColor={'#CFD8DC'}
                 keyboardType='decimal-pad'
-                // onChangeText={newText => setEmail(newText)}
+                onChangeText={newText => setSessionScreenshot(newText)}
               />
           </View>
           {/* ////////////////////////////////////////////////////////////////// */}
+          <View style = {styles.btnMainBox}>
+            <SubmitButton title={"SUBMIT"}/>
+          </View>
         </ImageBackground>
       </KeyboardAwareScrollView>
   );
@@ -209,7 +248,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: '100%',
-    height: '100%',
+    height: '110%',
     paddingTop: 50
   },
   headingSection: {
@@ -313,5 +352,28 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: 10,
     marginBottom: 15
-  }
+  },
+  btnMainBox: {
+    width: '100%',
+    height: '17%',
+    alignItems: 'center',
+    // backgroundColor: 'red'
+},
+submitBtnContainer: { 
+    width: '55%',
+    height: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#171717',
+    borderRadius: 20,
+    borderColor: '#E53935',
+    borderWidth: 2
+},
+submitBtn: {
+    alignSelf: 'center',
+    // backgroundColor: 'blue',
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold'
+},
 })
