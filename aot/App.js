@@ -50,10 +50,11 @@ export default function App() {
           barStyle={{backgroundColor: '#171717'}} 
           initialRouteName='Home'
           activeColor='#E53935'
-          labeled={false}
+          
           screenOptions={{
             tabBarStyle: { backgroundColor: '#171717', borderTopWidth: 0, paddingTop: 5},
-            tabBarLabelStyle: { color: '#CFD8DC' }
+            tabBarLabelStyle: { color: '#CFD8DC' },
+            tabBarShowLabel: false
           }}
         >
           <Tab.Screen 

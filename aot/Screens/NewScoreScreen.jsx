@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { addScore } from '../services/FirestoreService';
 import { getCurrentUser } from '../services/authService';
+import { Timestamp } from 'firebase/firestore';
 
 const battleRating = [
   { label: '1.0', value: '1.0' },
@@ -82,7 +83,8 @@ const NewScoreScreen = ({navigation}) => {
       battleRating: battleRatingValue,
       score: battleScore,
       replayNo: replayNo,
-      battleSC: sessionScreenshot
+      battleSC: sessionScreenshot,
+      time: Timestamp.now()
     }
 
     var success = await addScore(userId, score)

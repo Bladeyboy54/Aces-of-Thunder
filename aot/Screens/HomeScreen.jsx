@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, ImageBackground, TouchableOpacity } from 'react-native';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
 
   
 
