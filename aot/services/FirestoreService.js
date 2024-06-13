@@ -14,3 +14,7 @@ export const addScore = async (userId, scoreData) => {
         return false
     }
 }
+
+export const getCurrentUserData = () => {
+    
+}

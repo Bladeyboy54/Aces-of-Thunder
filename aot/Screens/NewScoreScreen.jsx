@@ -219,7 +219,7 @@ const NewScoreScreen = ({navigation}) => {
               style = {styles.inputField}
               placeholder = "0000"
               placeholderTextColor={'#CFD8DC'}
-              keyboardType='decimal-pad'
+              keyboardType='default'
               onChangeText={newText => setReplayNo(newText)}
             />
           </View>
@@ -232,7 +232,7 @@ const NewScoreScreen = ({navigation}) => {
                 style = {styles.inputField}
                 placeholder = "https://"
                 placeholderTextColor={'#CFD8DC'}
-                keyboardType='decimal-pad'
+                keyboardType='default'
                 onChangeText={newText => setSessionScreenshot(newText)}
               />
           </View>
