@@ -42,22 +42,27 @@ export default function App() {
   const isSignedIn = getSignedIn();
 
   return (
+    
     <NavigationContainer>
-      
+    <StatusBar backgroundColor="#171717" style="light"/>
       {isSignedIn ? (
         <Tab.Navigator
           barStyle={{backgroundColor: '#171717'}} 
           initialRouteName='Home'
           activeColor='#E53935'
           labeled={false}
-          
+          screenOptions={{
+            tabBarStyle: { backgroundColor: '#171717', borderTopWidth: 0, paddingTop: 5},
+            tabBarLabelStyle: { color: '#CFD8DC' }
+          }}
         >
           <Tab.Screen 
             options={{ 
               headerShown: false,
               tabBarIcon: ({ focused }) => (
                   <Image source={require('../aot/assets/icons/Home.png')} resizeMode='cover'/>
-              )
+              ),
+            
             }} 
             name="Home" 
             component={HomeScreen} 

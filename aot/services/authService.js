@@ -10,7 +10,6 @@ export const handleLogin = ( email, password ) => {
     console.log("Logged In User - " + user.email)
     })
     .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage)
     });
@@ -18,4 +17,14 @@ export const handleLogin = ( email, password ) => {
 
 export const handleRegester = (email, password ) => {
     return createUserWithEmailAndPassword(auth, email, password)
+}
+
+export const getCurrentUser = () => {
+    const user = auth.currentUser
+
+    if (user) { 
+        return user
+    } else {
+        return null;
+    }
 }

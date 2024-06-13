@@ -6,6 +6,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { addScore } from '../services/FirestoreService';
+import { getCurrentUser } from '../services/authService';
 
 const battleRating = [
   { label: '1.0', value: '1.0' },
@@ -53,7 +54,7 @@ const battleType = [
   { label: 'Simulation Battle', value: 'SB'}
 ]
 
-const NewScoreScreen = () => {
+const NewScoreScreen = ({navigation}) => {
 
   const [value, setValue] = useState("");
   const [battleTypeValue, setBattleTypeValue] = useState("");
@@ -64,7 +65,11 @@ const NewScoreScreen = () => {
 
   const [isFocus, setIsFocus] = useState(false);
 
-  const SubmitButton = ({ onPress, title }) => (
+  const currentUser = getCurrentUser()
+  
+  const userId = currentUser.uid
+
+  const SubmitButton = ({ title }) => (
     <TouchableOpacity onPress={handleScoreSub} style={styles.submitBtnContainer}>
         <Text style={styles.submitBtn}>{title}</Text>
     </TouchableOpacity>
@@ -83,7 +88,8 @@ const NewScoreScreen = () => {
     var success = await addScore(userId, score)
 
     if(success) {
-      Alert.alert("Score submitted successfully!");
+      console.log("Score submitted successfully!");
+      navigation.navigate('Home');
     }
   }
 
