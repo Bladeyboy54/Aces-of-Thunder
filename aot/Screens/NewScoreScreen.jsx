@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import {Image, ImageBackground, StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import {Image, ImageBackground, StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Pressable} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -8,6 +8,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { addScore } from '../services/FirestoreService';
 import { getCurrentUser } from '../services/authService';
 import { Timestamp } from 'firebase/firestore';
+import * as ImagePicker from 'expo-image-picker';
+import { scoreImgUpload } from '../services/bucketService';
 
 const battleRating = [
   { label: '1.0', value: '1.0' },
@@ -78,12 +80,14 @@ const NewScoreScreen = ({navigation}) => {
 
   const handleScoreSub = async () => {
 
+    await scoreImgUpload(sessionScreenshot)
+
     var score = {
       battleType: battleTypeValue,
       battleRating: battleRatingValue,
       score: battleScore,
       replayNo: replayNo,
-      battleSC: sessionScreenshot,
+      battleSC: sessionScreenshot.uri ,
       time: Timestamp.now()
     }
 
@@ -93,6 +97,22 @@ const NewScoreScreen = ({navigation}) => {
       console.log("Score submitted successfully!");
       navigation.navigate('Home');
     }
+  }
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 1,
+    })
+
+    console.log(result)
+    
+    if (!result.canceled) {
+      setSessionScreenshot(result.assets[0].uri);
+    }
+
   }
 
   return (
@@ -230,13 +250,20 @@ const NewScoreScreen = ({navigation}) => {
             <Text style = {styles.inputTopText}>Session Screenshot</Text>
           </View>
           <View style = {styles.inputContainer}>
-              <TextInput
+            <View style = {styles.uploadImgContainer}>
+              <Pressable title="Pick an image from camera roll" onPress={pickImage} style={styles.uploadImgBtn}>
+                <Text style={styles.uploadImgBtnText}>Add Image</Text>
+              </Pressable>
+              {sessionScreenshot && <Image source={{uri: sessionScreenshot}} style={styles.sessionSC} />}
+            </View>
+            
+              {/* <TextInput
                 style = {styles.inputField}
                 placeholder = "https://"
                 placeholderTextColor={'#CFD8DC'}
                 keyboardType='default'
                 onChangeText={newText => setSessionScreenshot(newText)}
-              />
+              /> */}
           </View>
           {/* ////////////////////////////////////////////////////////////////// */}
           <View style = {styles.btnMainBox}>
@@ -366,8 +393,8 @@ const styles = StyleSheet.create({
     height: '17%',
     alignItems: 'center',
     // backgroundColor: 'red'
-},
-submitBtnContainer: { 
+  },
+  submitBtnContainer: { 
     width: '55%',
     height: '50%',
     justifyContent: 'center',
@@ -376,12 +403,35 @@ submitBtnContainer: {
     borderRadius: 20,
     borderColor: '#E53935',
     borderWidth: 2
-},
-submitBtn: {
+  },
+  submitBtn: {
     alignSelf: 'center',
     // backgroundColor: 'blue',
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: 'bold'
-},
+  },
+  sessionSC: {
+    width: 200,
+    height: 200,
+  },
+  uploadImgBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: 'black',
+  },
+  uploadImgBtnText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+  uploadImgContainer: {
+    
+  }
 })
