@@ -1,6 +1,16 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import {Image, ImageBackground, StyleSheet, Text, View, TextInput, TouchableOpacity, Button, Pressable} from 'react-native';
+import {
+  Image, 
+  ImageBackground, 
+  StyleSheet, 
+  Text, 
+  View, 
+  TextInput, 
+  TouchableOpacity, 
+  Button, 
+  Pressable
+} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -130,7 +140,7 @@ const NewScoreScreen = ({navigation}) => {
           style={styles.backgroundImage}
           resizeMode='cover'
         >
-
+          {/* //////////////////////HEADER SECTION////////////////////////////////// */}
           <View 
             style={styles.headingSection}
           >
@@ -329,16 +339,7 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 5,
   },
-  // label: {
-  //   position: 'absolute',
-  //   backgroundColor: 'transparent',
-  //   left: 22,
-  //   top: 8,
-  //   zIndex: 999,
-  //   paddingHorizontal: 8,
-  //   fontSize: 14,
-  //   color: '#fff'
-  // },
+  
   placeholderStyle: {
     fontSize: 16,
     color: '#FFFFFF'
