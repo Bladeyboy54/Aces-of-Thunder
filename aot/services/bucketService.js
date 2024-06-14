@@ -2,7 +2,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase";
 
 
-export const scoreImgUpload = async (uri) => {
+export const scoreImgUpload = async (uri, fileName) => {
 
     const blob = await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
@@ -18,7 +18,7 @@ export const scoreImgUpload = async (uri) => {
         xhr.send(null);
     })
 
-    const imageRef = ref(storage)
+    const imageRef = ref(storage, fileName)
     const uploadResult = await uploadBytes(imageRef, blob)
 
     blob.close()

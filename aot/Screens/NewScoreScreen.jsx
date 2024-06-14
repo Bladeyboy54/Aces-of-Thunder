@@ -79,24 +79,28 @@ const NewScoreScreen = ({navigation}) => {
   );
 
   const handleScoreSub = async () => {
-
-    await scoreImgUpload(sessionScreenshot)
+  
+    await scoreImgUpload(sessionScreenshot, replayNo)
 
     var score = {
       battleType: battleTypeValue,
       battleRating: battleRatingValue,
       score: battleScore,
       replayNo: replayNo,
-      battleSC: sessionScreenshot.uri ,
+      battleSC: sessionScreenshot,
       time: Timestamp.now()
     }
 
-    var success = await addScore(userId, score)
+    
 
+    var success = await addScore(userId, score)
+    
     if(success) {
       console.log("Score submitted successfully!");
       navigation.navigate('Home');
     }
+    
+    
   }
 
   const pickImage = async () => {
@@ -412,8 +416,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   sessionSC: {
-    width: 200,
-    height: 200,
+    width: 50,
+    height: 50,
   },
   uploadImgBtn: {
     alignItems: 'center',
@@ -432,6 +436,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   uploadImgContainer: {
-    
+    flexDirection: 'row'
   }
 })
