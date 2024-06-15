@@ -1,56 +1,77 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ImageBackground, TouchableOpacity } from 'react-native';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import { getCurrentUser } from '../services/authService';
+import { getAllUserData, getCurrentUserData } from '../services/FirestoreService';
 
 const HomeScreen = ({navigation}) => {
 
-  
 
-    return (
-      <SafeAreaView style={styles.container}>
-        <ImageBackground
-          source={require('../assets/BackgroundTexture1.png')}
-          style={styles.backgroundImage}
-          resizeMode='cover'
-        >
-          <View style={styles.userInfoBox}>
-            <View style={styles.userInfoContainer}>
-              <Image 
-                source={require('../assets/profileImg/Cardicon_cosmonaut_ussr_01.png')}
-                style={styles.avatar}
-              />
-              <View style={styles.userInfo}>
-                <Text style={styles.username}>RandoPlayer55</Text>
-                <Text style={styles.level}>Level 20</Text>
-              </View>
-            </View>    
-          </View>
-          <View style={styles.mainImageContainer}>
+  const currentUser = getCurrentUser()
+  const userId = currentUser.uid
+
+  const [userData, setUserData] = useState([])
+
+  useEffect(()=>{
+    handleGettingUser()
+  }, [])
+
+  const [users, setUsers] = useState([])
+
+  const handleGettingUser = async () => {
+    var usersData = await getAllUserData()
+    setUsers(usersData)
+  }
+
+  const getCurrentUserData = async () => {
+    var currentUserid = userId
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <ImageBackground
+        source={require('../assets/BackgroundTexture1.png')}
+        style={styles.backgroundImage}
+        resizeMode='cover'
+      >
+        <View style={styles.userInfoBox}>
+          <View style={styles.userInfoContainer}>
             <Image 
-              source={require('../assets/img/tiger2.png')} 
-              style={styles.mainImage}
+              source={require('../assets/profileImg/Cardicon_cosmonaut_ussr_01.png')}
+              style={styles.avatar}
             />
-              <View style={styles.statsOverlay}>
-              <Text style={styles.statsText}>RB</Text>
-              <Text style={styles.statsText}>1.4K</Text>
-              <Text style={styles.statsText}>BR 6.7</Text>
+            <View style={styles.userInfo}>
+              <Text style={styles.username}>Gamer Tag</Text>
+              <Text style={styles.level}>Level 20</Text>
             </View>
+          </View>    
+        </View>
+        <View style={styles.mainImageContainer}>
+          <Image 
+            source={require('../assets/img/tiger2.png')} 
+            style={styles.mainImage}
+          />
+            <View style={styles.statsOverlay}>
+            <Text style={styles.statsText}>RB</Text>
+            <Text style={styles.statsText}>1.4K</Text>
+            <Text style={styles.statsText}>BR 6.7</Text>
           </View>
-          <TouchableOpacity style={styles.homeNav}>
-            <Image source={require('../assets/icons/ribbon.png')} style={styles.navIcon}/>
-            <Text style={styles.homeNavText}>Battle Pass</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.homeNav}>
-            <Image source={require('../assets/icons/Leaderboard.png')} style={styles.navIcon}/>
-            <Text style={styles.homeNavText}>Leaderboard</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.homeNav}>
-            <Image source={require('../assets/icons/addNew.png')} style={styles.navIcon}/>
-            <Text style={styles.homeNavText}>Add New Score</Text>
-          </TouchableOpacity>
-        </ImageBackground>
-      </SafeAreaView>    
-    );
+        </View>
+        <TouchableOpacity style={styles.homeNav}>
+          <Image source={require('../assets/icons/ribbon.png')} style={styles.navIcon}/>
+          <Text style={styles.homeNavText}>Battle Pass</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.homeNav}>
+          <Image source={require('../assets/icons/Leaderboard.png')} style={styles.navIcon}/>
+          <Text style={styles.homeNavText}>Leaderboard</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.homeNav}>
+          <Image source={require('../assets/icons/addNew.png')} style={styles.navIcon}/>
+          <Text style={styles.homeNavText}>Add New Score</Text>
+        </TouchableOpacity>
+      </ImageBackground>
+    </SafeAreaView>    
+  );
 };
 export default HomeScreen;
 
