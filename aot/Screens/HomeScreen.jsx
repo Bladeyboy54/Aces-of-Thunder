@@ -7,25 +7,44 @@ import { getAllUserData, getCurrentUserData } from '../services/FirestoreService
 const HomeScreen = ({navigation}) => {
 
 
-  const currentUser = getCurrentUser()
-  const userId = currentUser.uid
+  // const currentUser = getCurrentUser()
+  // const userId = currentUser.uid
 
-  const [userData, setUserData] = useState([])
+  // const [userData, setUserData] = useState([])
 
-  useEffect(()=>{
-    handleGettingUser()
-  }, [])
+  // useEffect(()=>{
+  //   handleGettingUser()
+  // }, [])
 
-  const [users, setUsers] = useState([])
+  // const [users, setUsers] = useState([])
 
-  const handleGettingUser = async () => {
-    var usersData = await getAllUserData()
-    setUsers(usersData)
-  }
+  // const handleGettingUser = async () => {
+  //   var usersData = await getAllUserData()
+  //   setUsers(usersData)
+  // }
 
-  const getCurrentUserData = async () => {
-    var currentUserid = userId
-  }
+  // const getCurrentUserData = async () => {
+  //   var currentUserid = userId
+  // }
+
+  //////////////////////////////////////////////////// |              | //////////////////////////////////////////////////
+  //////////////////////////////////////////////////// V Experimental V //////////////////////////////////////////////////
+  const [userData, setUserData] = useState({ gamerTag: '', playerLevel: 0 });
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const currentUser = getCurrentUser();
+      if (currentUser) {
+        const data = await getCurrentUserData(currentUser.uid);
+        if (data) {
+          setUserData(data);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,8 +60,8 @@ const HomeScreen = ({navigation}) => {
               style={styles.avatar}
             />
             <View style={styles.userInfo}>
-              <Text style={styles.username}>Gamer Tag</Text>
-              <Text style={styles.level}>Level 20</Text>
+              <Text style={styles.username}>{userData.gamerTag}</Text>
+              <Text style={styles.level}>Level {userData.playerLevel}</Text>
             </View>
           </View>    
         </View>
@@ -57,6 +76,7 @@ const HomeScreen = ({navigation}) => {
             <Text style={styles.statsText}>BR 6.7</Text>
           </View>
         </View>
+        {/* //////////////////////Lower Section////////////////////////////////// */}
         <TouchableOpacity style={styles.homeNav}>
           <Image source={require('../assets/icons/ribbon.png')} style={styles.navIcon}/>
           <Text style={styles.homeNavText}>Battle Pass</Text>

@@ -21,10 +21,5 @@ export const handleRegester = (email, password ) => {
 
 export const getCurrentUser = () => {
     const user = auth.currentUser
-
-    if (user) { 
-        return user
-    } else {
-        return null;
-    }
+    return user ? user.uid : null
 }

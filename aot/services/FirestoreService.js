@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { getCurrentUser } from "./authService";
 
@@ -16,22 +16,27 @@ export const addScore = async (userId, scoreData) => {
     }
 }
 
-// const currentUser = getCurrentUser()
-  
-// const userId = currentUser.uid
 
-// export const getCurrentUserData = async () => {
-    
-//     const docRef = doc(db, "users", userId)
 
-//     const docSnap = await getDocs(docRef)
+export const getCurrentUserData = async () => {
+    const userId = getCurrentUser()
 
-//     if (docSnap.exists()) {
-//         console.log('User data:', docSnap.data())
-//     } else {
-//         console.log("No such document!");
-//     }
-// }
+    if (!userId) {
+        console.error("No user is logged in");
+        return null;
+    }
+
+    const docRef = doc(db, "users", userId)
+    const docSnap = await getDoc(docRef)
+
+    if (docSnap.exists()) {
+        // console.log('User data:', docSnap.data());
+        return docSnap.data();
+    } else {
+        console.log("No such document!");
+        return null;
+    }
+}
 
 export const getAllUserData = async () => {
     
