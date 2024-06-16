@@ -2,49 +2,47 @@ import React, { useEffect, useState } from 'react';
 import { Image, ImageBackground, TouchableOpacity } from 'react-native';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import { getCurrentUser } from '../services/authService';
-import { getAllUserData, getCurrentUserData } from '../services/FirestoreService';
+import { getAllUserData, getCurrentUserData, getRecentScores } from '../services/FirestoreService';
+import HomeTableCard from './HomeTable';
 
 const HomeScreen = ({navigation}) => {
 
-
-  // const currentUser = getCurrentUser()
-  // const userId = currentUser.uid
-
-  // const [userData, setUserData] = useState([])
-
-  // useEffect(()=>{
-  //   handleGettingUser()
-  // }, [])
-
-  // const [users, setUsers] = useState([])
-
-  // const handleGettingUser = async () => {
-  //   var usersData = await getAllUserData()
-  //   setUsers(usersData)
-  // }
-
-  // const getCurrentUserData = async () => {
-  //   var currentUserid = userId
-  // }
-
-  //////////////////////////////////////////////////// |              | //////////////////////////////////////////////////
-  //////////////////////////////////////////////////// V Experimental V //////////////////////////////////////////////////
   const [userData, setUserData] = useState({ gamerTag: '', playerLevel: 0 });
+  const [recentScores, setRecentScores] = useState([]);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const currentUser = getCurrentUser();
-      if (currentUser) {
-        const data = await getCurrentUserData(currentUser.uid);
-        if (data) {
-          setUserData(data);
+      try {
+        const currentUser = getCurrentUser();
+        if (currentUser) {
+          const data = await getCurrentUserData(currentUser.uid);
+          if (data) {
+            setUserData(data);
+          }
+          
         }
+      } catch (e){
+        console.log("Error fetching user data:", e);
       }
     };
 
     fetchUserData();
   }, []);
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                       //<====>    COMMENT        <======================>
+  useEffect(() => {    //<====>    THIS           <======================>
+    fetchRecentScores()//<====>    SECTION        <======================>
+  })                   //<====>    OUT            <======================>
+                       //<====>    WHILE TESTING  <======================>
+
+  const fetchRecentScores = async () => {
+    var scores = await getAllUserData()
+    setRecentScores(scores)
+  }
+      
+  
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -76,8 +74,32 @@ const HomeScreen = ({navigation}) => {
             <Text style={styles.statsText}>BR 6.7</Text>
           </View>
         </View>
+        <Text style={styles.scoresTitle}>Recent Scores</Text>
+        <View style={styles.scoresContainer}>
+          
+          <View style={styles.scoresTable}>
+          <View style={styles.tableHeader}>
+              <Text style={styles.tableHeaderText}>Battle Rating</Text>
+              <Text style={styles.tableHeaderText}>Battle Type</Text>
+              <Text style={styles.tableHeaderText}>Score</Text>
+            </View>
+            {/* {recentScores.map((score, index) => {
+              <View key={index} style={styles.tableRow}>
+                <Text style={styles.tableCell}>{score.battleRating}</Text>
+                <Text style={styles.tableCell}>{score.battleType}</Text>
+                <Text style={styles.tableCell}>{score.score}</Text>
+              </View>
+            })} */}
+            {recentScores != [] ? (
+              recentScores.map((homeData, index) => (
+                <HomeTableCard homeData={homeData} key={homeData.id}/>
+              ))
+            ): null}
+          </View>
+        </View>
+
         {/* //////////////////////Lower Section////////////////////////////////// */}
-        <TouchableOpacity style={styles.homeNav}>
+        {/* <TouchableOpacity style={styles.homeNav}>
           <Image source={require('../assets/icons/ribbon.png')} style={styles.navIcon}/>
           <Text style={styles.homeNavText}>Battle Pass</Text>
         </TouchableOpacity>
@@ -88,7 +110,9 @@ const HomeScreen = ({navigation}) => {
         <TouchableOpacity style={styles.homeNav}>
           <Image source={require('../assets/icons/addNew.png')} style={styles.navIcon}/>
           <Text style={styles.homeNavText}>Add New Score</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        {/* //////////////////////Lower Section END////////////////////////////////// */}
+
       </ImageBackground>
     </SafeAreaView>    
   );
@@ -175,27 +199,68 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 15,
       },
-      homeNav: {
+      // homeNav: {
+      //   width: '85%',
+      //   flexDirection: 'row',
+      //   alignItems: 'center',
+      //   backgroundColor: '#171717',
+      //   padding: 12,
+      //   borderRadius: 10,
+      //   marginBottom: 15,
+      //   alignSelf: 'center',
+      //   borderColor: '#E53935',
+      //   borderWidth: 1,
+      // },
+      // navIcon: {
+      //   height: 30,
+      //   width: 30
+      // },
+      // homeNavText: {
+      //   color: 'white',
+      //   fontSize: 24,
+      //   marginLeft: 10,
+      //   fontWeight: '400',
+        
+      // },
+
+      scoresContainer: {
         width: '85%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#171717',
-        padding: 12,
-        borderRadius: 10,
-        marginBottom: 15,
         alignSelf: 'center',
+        backgroundColor: '#171717',
+        borderRadius: 10,
+        padding: 20,
         borderColor: '#E53935',
         borderWidth: 1,
+        marginTop: 20,
       },
-      navIcon: {
-        height: 30,
-        width: 30
-      },
-      homeNavText: {
+      scoresTitle: {
         color: 'white',
-        fontSize: 24,
-        marginLeft: 10,
-        fontWeight: '400',
-        
+        fontSize: 20,
+        fontWeight: 'bold',
+        // marginBottom: 10,
+        width: '85%',
+        alignSelf: 'center',
+      },
+      scoresTable: {
+        width: '100%',
+      },
+      tableHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+      },
+      tableHeaderText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      tableRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 5,
+      },
+      tableCell: {
+        color: 'white',
+        fontSize: 14,
       },
 })

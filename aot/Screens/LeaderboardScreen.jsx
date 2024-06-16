@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -101,7 +101,7 @@ const LeaderboardScreen = () => {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={!isFocus ? 'Select Battle Type' : '...'}
+              placeholder={!isFocus ? ' TYPE' : '...'}
               searchPlaceholder="Search..."
               value={value}
               onFocus={() => setIsFocus(true)}
@@ -140,7 +140,7 @@ const LeaderboardScreen = () => {
               maxHeight={300}
               labelField="label"
               valueField="value"
-              placeholder={!isFocus ? 'Select Battle Type' : '...'}
+              placeholder={!isFocus ? ' BR' : '...'}
               searchPlaceholder="Search..."
               value={value}
               onFocus={() => setIsFocus(true)}
@@ -150,17 +150,20 @@ const LeaderboardScreen = () => {
                 setIsFocus(false);
               }}
               renderLeftIcon={() => (
-                <MaterialCommunityIcons
-                  name="tank" 
-                  size={24} 
-                  color="white" 
+                <FontAwesome5
+                  style={styles.icon}
+                  color={isFocus ? '#E53935' : '#FFFFFF'}
+                  name="fighter-jet"
+                  size={20}
                 />
               )}
             />
 
           </View>
         </View>
-        
+        <View>
+          
+        </View>
       </ImageBackground>
     </KeyboardAwareScrollView>
   );
