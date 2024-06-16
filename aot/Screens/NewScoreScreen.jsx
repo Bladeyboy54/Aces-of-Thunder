@@ -33,6 +33,9 @@ const battleRating = [
   { label: '3.7', value: '3.7' },
   { label: '4.0', value: '4.0' },
   { label: '4.3', value: '4.3' },
+  { label: '4.7', value: '4.7' },
+  { label: '5.0', value: '5.0' },
+  { label: '5.3', value: '5.3' },
   { label: '5.7', value: '5.7' },
   { label: '6.0', value: '6.0' },
   { label: '6.3', value: '6.3' },
@@ -80,7 +83,6 @@ const NewScoreScreen = ({navigation}) => {
 
   const currentUser = getCurrentUser()
   
-  const userId = currentUser.uid
 
   const SubmitButton = ({ title }) => (
     <TouchableOpacity onPress={handleScoreSub} style={styles.submitBtnContainer}>
@@ -89,27 +91,27 @@ const NewScoreScreen = ({navigation}) => {
   );
 
   const handleScoreSub = async () => {
-  
-    await scoreImgUpload(sessionScreenshot, replayNo)
+    try {
+      const imageUrl = await scoreImgUpload(sessionScreenshot, replayNo)
 
-    var score = {
-      battleType: battleTypeValue,
-      battleRating: battleRatingValue,
-      score: battleScore,
-      replayNo: replayNo,
-      battleSC: sessionScreenshot,
-      time: Timestamp.now()
-    }
-
-    
-
-    var success = await addScore(userId, score)
-    
-    if(success) {
-      console.log("Score submitted successfully!");
-      navigation.navigate('Home');
-    }
-    
+      const score = {
+        battleType: battleTypeValue,
+        battleRating: battleRatingValue,
+        score: battleScore,
+        replayNo: replayNo,
+        battleSC: imageUrl,
+        time: Timestamp.now()
+      }
+     
+      const success = await addScore(currentUser, score)
+      
+      if(success) {
+        console.log("Score submitted successfully!");
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      console.error("Error submitting score: ", error);
+  }
     
   }
 
@@ -389,6 +391,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '17%',
     alignItems: 'center',
+    marginTop: 20,
     // backgroundColor: 'red'
   },
   submitBtnContainer: { 
@@ -406,7 +409,8 @@ const styles = StyleSheet.create({
     // backgroundColor: 'blue',
     color: '#FFFFFF',
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    
   },
   sessionSC: {
     width: 50,
@@ -420,6 +424,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     backgroundColor: 'black',
+    marginTop: 20
   },
   uploadImgBtnText: {
     fontSize: 16,

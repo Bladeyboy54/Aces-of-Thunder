@@ -23,6 +23,9 @@ export const scoreImgUpload = async (uri, fileName) => {
 
     blob.close()
 
-    console.log(await getDownloadURL(imageRef))
+    // console.log(await getDownloadURL(imageRef))
+    const downloadURL = await getDownloadURL(imageRef)
+    console.log(downloadURL)
+    return downloadURL
 }
 

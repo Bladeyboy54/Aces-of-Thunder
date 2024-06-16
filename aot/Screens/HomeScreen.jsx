@@ -30,18 +30,18 @@ const HomeScreen = ({navigation}) => {
     fetchUserData();
   }, []);
       
-  // useEffect(() => {
-  //   const fetchRecentScores = async () => {
-  //     try {
-  //       const scores = await getAllUserData();
-  //       setRecentScores(scores);
-  //     } catch (e) {
-  //       console.log("Error fetching recent scores:", e);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchRecentScores = async () => {
+      try {
+        const scores = await getAllUserData();
+        setRecentScores(scores);
+      } catch (e) {
+        console.log("Error fetching recent scores:", e);
+      }
+    };
 
-  //   fetchRecentScores();
-  // }, []);
+    fetchRecentScores();
+  }, []);
 
 
   return (
@@ -69,7 +69,7 @@ const HomeScreen = ({navigation}) => {
             style={styles.mainImage}
           />
             <View style={styles.statsOverlay}>
-            <Text style={styles.statsText}>RB</Text>
+            <Text style={styles.statsText}>GRB</Text>
             <Text style={styles.statsText}>1.4K</Text>
             <Text style={styles.statsText}>BR 6.7</Text>
           </View>
