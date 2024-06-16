@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image, 
   ImageBackground, 
@@ -15,7 +15,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { addScore } from '../services/FirestoreService';
+import { addScore, getCurrentUserData } from '../services/FirestoreService';
 import { getCurrentUser } from '../services/authService';
 import { Timestamp } from 'firebase/firestore';
 import * as ImagePicker from 'expo-image-picker';
@@ -78,11 +78,30 @@ const NewScoreScreen = ({navigation}) => {
   const [battleScore, setBattleScore] = useState("");
   const [replayNo, setReplayNo] = useState("");
   const [sessionScreenshot, setSessionScreenshot] = useState("");
+  const [userData, setUserData] = useState({ gamerTag: ''});
 
   const [isFocus, setIsFocus] = useState(false);
 
   const currentUser = getCurrentUser()
   
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const currentUser = getCurrentUser();
+        if (currentUser) {
+          const data = await getCurrentUserData(currentUser.uid);
+          if (data) {
+            setUserData(data);
+          }
+          
+        }
+      } catch (e){
+        console.log("Error fetching user data:", e);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const SubmitButton = ({ title }) => (
     <TouchableOpacity onPress={handleScoreSub} style={styles.submitBtnContainer}>
@@ -96,6 +115,7 @@ const NewScoreScreen = ({navigation}) => {
 
       const score = {
         battleType: battleTypeValue,
+        gamerTag: userData.gamerTag,
         battleRating: battleRatingValue,
         score: battleScore,
         replayNo: replayNo,

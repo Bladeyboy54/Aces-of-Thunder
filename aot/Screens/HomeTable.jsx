@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const HomeTableCard = (props) => {
@@ -24,7 +24,9 @@ const HomeTableCard = (props) => {
 
             const scoreRef = collection(userRef, "scores")
 
-            const unsubscribe = onSnapshot(scoreRef, (querySnapshot) => {
+            const q = query(scoreRef, orderBy("score", "desc"))
+
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
                 const scoreData = []
 
                 querySnapshot.forEach((doc) => {

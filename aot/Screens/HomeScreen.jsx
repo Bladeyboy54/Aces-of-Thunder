@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { Button, Image, ImageBackground, Pressable, TouchableOpacity } from 'react-native';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import { getCurrentUser } from '../services/authService';
 import { getAllUserData, getCurrentUserData, getRecentScores } from '../services/FirestoreService';
 import HomeTableCard from './HomeTable';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
 
 const HomeScreen = ({navigation}) => {
 
   const [userData, setUserData] = useState({ gamerTag: '', playerLevel: 0 });
   const [recentScores, setRecentScores] = useState([]);
-  const [Test, setTest] = useState([])
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -30,20 +32,27 @@ const HomeScreen = ({navigation}) => {
     fetchUserData();
   }, []);
 
+  const handleLogout = () => {               
+    signOut(auth).then(() => {
+      console.log("Signed out successfully")
+    }).catch((error) => {
+      console.log("error signing out", error)
+    });
+}
   ///////////////////////////////////////////////////////
       
-  // useEffect(() => {
-  //   const fetchRecentScores = async () => {
-  //     try {
-  //       const scores = await getAllUserData();
-  //       setRecentScores(scores);
-  //     } catch (e) {
-  //       console.log("Error fetching recent scores:", e);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchRecentScores = async () => {
+      try {
+        const scores = await getAllUserData();
+        setRecentScores(scores);
+      } catch (e) {
+        console.log("Error fetching recent scores:", e);
+      }
+    };
 
-  //   fetchRecentScores();
-  // }, []);
+    fetchRecentScores();
+  }, []);
 
 
   return (
@@ -63,6 +72,10 @@ const HomeScreen = ({navigation}) => {
               <Text style={styles.username}>{userData.gamerTag}</Text>
               <Text style={styles.level}>Level {userData.playerLevel}</Text>
             </View>
+            <Pressable style={styles.logout} onPress={handleLogout}>
+              <Text style={styles.logoutText}> Sign Out </Text>
+            </Pressable>
+            
           </View>    
         </View>
         <View style={styles.mainImageContainer}>
@@ -77,7 +90,7 @@ const HomeScreen = ({navigation}) => {
           </View>
         </View>
         {/* //////////////////////Lower Section////////////////////////////////// */}
-        <Text style={styles.scoresTitle}>Recent Scores</Text>
+        <Text style={styles.scoresTitle}>My Top Scores</Text>
         <View style={styles.scoresContainer}>
           
           <View style={styles.scoresTable}>
@@ -149,6 +162,14 @@ const styles = StyleSheet.create({
       level: {
         color: '#888',
         fontSize: 14,
+      },
+      logout: {
+        paddingLeft: 10
+      },
+      logoutText: {
+        color: '#E53935',
+        fontSize: 18,
+        fontWeight: 'bold',
       },
       mainImageContainer: {
         // width: 270,

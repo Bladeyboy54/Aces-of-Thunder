@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { useFocusEffect } from '@react-navigation/native';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const LeaderboardCard = (props) => {
@@ -18,7 +18,9 @@ const LeaderboardCard = (props) => {
 
             const scoreRef = collection(userRef, "scores")
 
-            const unsubscribe = onSnapshot(scoreRef, (querySnapshot) => {
+            const q = query(scoreRef, orderBy("score", "desc"))
+
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
                 const scoreData = []
 
                 querySnapshot.forEach((doc) => {
@@ -44,7 +46,11 @@ const LeaderboardCard = (props) => {
                     tableData.map((data) => (
                         <View key={data.id} style={styles.scoreData}>
                             
-                            <Text style={styles.scoreText}>{data.battleType}</Text>
+                            <Text style={styles.scoreText}>
+                                {data.gamerTag.length > 10
+                                    ? `${data.gamerTag.substring(0, 8)}...`
+                                    : data.gamerTag}
+                            </Text>
                             <Text style={styles.scoreText}>{data.score}</Text>
                             <Text style={styles.scoreText}>{data.battleRating}</Text>
                         </View>

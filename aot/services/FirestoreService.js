@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, limit, getFirestore } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, limit, getFirestore, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { getCurrentUser } from "./authService";
 
@@ -16,8 +16,6 @@ export const addScore = async (userId, scoreData) => {
         return false
     }
 }
-
-
 
 export const getCurrentUserData = async () => {
     const userId = getCurrentUser()
@@ -47,9 +45,9 @@ export const getAllUserData = async () => {
 
     var usersData = []
 
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach((scores) => {
         // console.log("<======User ID========>", doc.id, "<======User Data========>",  doc.data());
-        var user = {...doc.data(), id: doc.id}
+        var user = {...scores.data(), id: scores.id}
         usersData.push(user)
     })
 
@@ -69,6 +67,7 @@ export const getRecentScores = async () => {
             ...doc.data(),
             id: doc.id
         }));
+        // console.log('===>', scores)
         return scores;
     } catch (e) {
         console.error("Error getting recent scores:", e);
@@ -76,3 +75,34 @@ export const getRecentScores = async () => {
     }
 };
 
+export const getFilteredScores = async (battleType, battleRating) => {
+    try {
+        const userId = getCurrentUser();
+        const scoresRef = collection(db, "users", userId, "scores");
+
+        let scoresQuery = query(scoresRef);
+
+        if (battleType) {
+            scoresQuery = query(scoresQuery, where('battleType', '==', battleType));
+        }
+
+        if (battleRating) {
+            scoresQuery = query(scoresQuery, where('battleRating', '==', battleRating));
+        }
+
+        scoresQuery = query(scoresQuery, orderBy('score', 'desc'));
+
+        const scoresSnapshot = await getDocs(scoresQuery);
+
+        const scores = scoresSnapshot.docs.map(doc => ({
+            ...doc.data(), id: doc.id
+        }));
+        console.log('====>', scores)
+        return scores;
+        
+    } catch (e) {
+        console.error("Error getting filtered scores:", e);
+        return [];
+    }
+    
+};

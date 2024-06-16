@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { getAllUserData } from '../services/FirestoreService';
+import { getAllUserData, getFilteredScores } from '../services/FirestoreService';
 import LeaderboardCard from './BoardTable';
 
 const battleRating = [
@@ -57,22 +57,28 @@ const battleType = [
 
 const LeaderboardScreen = () => {
 
+  ///////////////////////////////////////////////////////////////
+  const [battleTypeValue, setBattleTypeValue] = useState("");
+  const [battleRatingValue, setBattleRatingValue] = useState("");
+  /////////////////////////////////////////////////////////////////
+
   const [value, setValue] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [recentScores, setRecentScores] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchRecentScores = async () => {
-  //     try {
-  //       const scores = await getAllUserData();
-  //       setRecentScores(scores);
-  //     } catch (e) {
-  //       console.log("Error fetching recent scores:", e);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchRecentScores = async () => {
+      try {
+        const scores = await getAllUserData()
+        setRecentScores(scores);
+      } catch (e) {
+        console.log("Error fetching recent scores:", e);
+      }
+    };
 
-  //   fetchRecentScores();
-  // }, []);
+    fetchRecentScores();
+    
+  }, []);
 
   return (
     <KeyboardAwareScrollView
@@ -164,7 +170,7 @@ const LeaderboardScreen = () => {
               onFocus={() => setIsFocus(true)}
               onBlur={() => setIsFocus(false)}
               onChange={item => {
-                setBattleTypeValue(item.value);
+                setBattleRatingValue(item.value);
                 setIsFocus(false);
               }}
               renderLeftIcon={() => (
@@ -183,13 +189,12 @@ const LeaderboardScreen = () => {
         <View style={styles.leaderboardContainer}>
           <View style={styles.leaderboardTable}>
             <View style={styles.leaderboardTableHeader}>
-              <Text style={styles.tableHeaderText}>Pos</Text>
               <Text style={styles.tableHeaderText}>Name</Text>
               <Text style={styles.tableHeaderText}>Score</Text>
               <Text style={styles.tableHeaderText}>BR</Text>
             </View>
             {recentScores.length > 0 ? (
-              recentScores.map((score, index) => index < 1 && (
+              recentScores.map((score, index) => (
                 <LeaderboardCard homeData={score} key={score.id}/>
               ))
             ): null}
