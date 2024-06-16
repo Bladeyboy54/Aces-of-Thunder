@@ -29,19 +29,21 @@ const HomeScreen = ({navigation}) => {
 
     fetchUserData();
   }, []);
-      
-  useEffect(() => {
-    const fetchRecentScores = async () => {
-      try {
-        const scores = await getAllUserData();
-        setRecentScores(scores);
-      } catch (e) {
-        console.log("Error fetching recent scores:", e);
-      }
-    };
 
-    fetchRecentScores();
-  }, []);
+  ///////////////////////////////////////////////////////
+      
+  // useEffect(() => {
+  //   const fetchRecentScores = async () => {
+  //     try {
+  //       const scores = await getAllUserData();
+  //       setRecentScores(scores);
+  //     } catch (e) {
+  //       console.log("Error fetching recent scores:", e);
+  //     }
+  //   };
+
+  //   fetchRecentScores();
+  // }, []);
 
 
   return (

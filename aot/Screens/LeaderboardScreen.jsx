@@ -1,8 +1,10 @@
 import { FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {Image, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { getAllUserData } from '../services/FirestoreService';
+import LeaderboardCard from './BoardTable';
 
 const battleRating = [
   { label: '1.0', value: '1.0' },
@@ -57,7 +59,20 @@ const LeaderboardScreen = () => {
 
   const [value, setValue] = useState("");
   const [isFocus, setIsFocus] = useState(false);
+  const [recentScores, setRecentScores] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchRecentScores = async () => {
+  //     try {
+  //       const scores = await getAllUserData();
+  //       setRecentScores(scores);
+  //     } catch (e) {
+  //       console.log("Error fetching recent scores:", e);
+  //     }
+  //   };
+
+  //   fetchRecentScores();
+  // }, []);
 
   return (
     <KeyboardAwareScrollView
@@ -164,8 +179,21 @@ const LeaderboardScreen = () => {
 
           </View>
         </View>
-        <View>
-
+        {/* ----------------------Leaderboard----------------------------------- */}
+        <View style={styles.leaderboardContainer}>
+          <View style={styles.leaderboardTable}>
+            <View style={styles.leaderboardTableHeader}>
+              <Text style={styles.tableHeaderText}>Pos</Text>
+              <Text style={styles.tableHeaderText}>Name</Text>
+              <Text style={styles.tableHeaderText}>Score</Text>
+              <Text style={styles.tableHeaderText}>BR</Text>
+            </View>
+            {recentScores.length > 0 ? (
+              recentScores.map((score, index) => index < 1 && (
+                <LeaderboardCard homeData={score} key={score.id}/>
+              ))
+            ): null}
+          </View>
         </View>
       </ImageBackground>
     </KeyboardAwareScrollView>
@@ -260,5 +288,36 @@ const styles = StyleSheet.create({
   },
   dropdownListText: {
     color: '#FFFFFF'
+  },
+  leaderboardContainer: {
+    width: '85%',
+    alignSelf: 'center',
+    backgroundColor: '#171717',
+    borderRadius: 10,
+    padding: 20,
+    borderColor: '#E53935',
+    borderWidth: 1,
+    marginTop: 20,
+  },
+  leadTitle: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+    // marginBottom: 10,
+    width: '85%',
+    alignSelf: 'center',
+  },
+  leaderboardTable: {
+    width: '100%',
+  },
+  leaderboardTableHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  tableHeaderText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 })
