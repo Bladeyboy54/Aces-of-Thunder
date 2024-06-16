@@ -56,37 +56,23 @@ export const getAllUserData = async () => {
     return usersData
 }
 
-// export const getAllUserData = async () => {
-//     const collectionRef = collection(db, "users");
-//     const querySnapshot = await getDocs(collectionRef);
-  
-//     const usersData = querySnapshot.docs.map((doc) => ({
-//       ...doc.data(),
-//       id: doc.id,
-//     }));
-  
-//     return usersData;
-//   }
-
 export const getRecentScores = async () => {
+
+    const userId = getCurrentUser()
+
     try {
-        const userId = getCurrentUser()
-        // const scoresRef = collection(db, "users", userId, "scores");
-        // const scoresQuery = query(scoresRef, orderBy('timestamp', 'desc'), limit(3));
-        // const scoresSnapshot = await getDocs(scoresQuery);
+        const scoresRef = collection(db, "users", userId, "scores");
+        const scoresQuery = query(scoresRef, orderBy('timestamp', 'desc'), limit(3));
+        const scoresSnapshot = await getDocs(scoresQuery);
         
-        // const scores = scoresSnapshot.docs.map(doc => doc.data());
-        // console.log(scores)
-        // return scores;
-        const scores = await getDocs(collection(db, "users", userId, "scores"))
-        scores.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            
-        });
-        return scores
-      } catch (e) {
+        const scores = scoresSnapshot.docs.map(doc => ({
+            ...doc.data(),
+            id: doc.id
+        }));
+        return scores;
+    } catch (e) {
         console.error("Error getting recent scores:", e);
         return [];
-      }
+    }
 };
+

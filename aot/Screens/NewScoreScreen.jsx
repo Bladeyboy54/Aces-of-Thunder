@@ -270,14 +270,6 @@ const NewScoreScreen = ({navigation}) => {
               </Pressable>
               {sessionScreenshot && <Image source={{uri: sessionScreenshot}} style={styles.sessionSC} />}
             </View>
-            
-              {/* <TextInput
-                style = {styles.inputField}
-                placeholder = "https://"
-                placeholderTextColor={'#CFD8DC'}
-                keyboardType='default'
-                onChangeText={newText => setSessionScreenshot(newText)}
-              /> */}
           </View>
           {/* ////////////////////////////////////////////////////////////////// */}
           <View style = {styles.btnMainBox}>

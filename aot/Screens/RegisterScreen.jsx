@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '25%',
         paddingTop: 50,
-        // backgroundColor: 'green',
         alignItems: 'center'
     },
     logo: {
@@ -150,11 +149,9 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '58%',
         alignItems: 'center',
-        // backgroundColor: 'green'
     },
     inputContainer: {
         width: '85%',
-        // color: '#FFFFFF'
         marginTop: 15
     },
     registerText: {
@@ -178,7 +175,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '17%',
         alignItems: 'center',
-        // backgroundColor: 'red'
     },
     submitBtnContainer: { 
         width: '55%',
@@ -192,7 +188,6 @@ const styles = StyleSheet.create({
     },
     submitBtn: {
         alignSelf: 'center',
-        // backgroundColor: 'blue',
         color: '#FFFFFF',
         fontSize: 20,
         fontWeight: 'bold'

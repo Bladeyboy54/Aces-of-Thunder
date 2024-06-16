@@ -162,7 +162,7 @@ const LeaderboardScreen = () => {
           </View>
         </View>
         <View>
-          
+
         </View>
       </ImageBackground>
     </KeyboardAwareScrollView>
@@ -207,15 +207,12 @@ const styles = StyleSheet.create({
     width: '85%',
     flexDirection: 'row',
     alignItems: 'center',
-    // backgroundColor: 'green',
     alignSelf: 'center',
     marginTop: 16
   },
   dropdownContainer: {
     alignItems: 'center',
-    width: '47%',
-    // backgroundColor: 'blue'
-    
+    width: '47%',    
   },
   spacer: {
     width: '6%'

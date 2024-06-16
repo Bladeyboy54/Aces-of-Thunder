@@ -9,7 +9,7 @@ const HomeScreen = ({navigation}) => {
 
   const [userData, setUserData] = useState({ gamerTag: '', playerLevel: 0 });
   const [recentScores, setRecentScores] = useState([]);
-
+  const [Test, setTest] = useState([])
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -29,19 +29,19 @@ const HomeScreen = ({navigation}) => {
 
     fetchUserData();
   }, []);
-
-                       //<====>    COMMENT        <======================>
-  useEffect(() => {    //<====>    THIS           <======================>
-    fetchRecentScores()//<====>    SECTION        <======================>
-  })                   //<====>    OUT            <======================>
-                       //<====>    WHILE TESTING  <======================>
-
-  const fetchRecentScores = async () => {
-    var scores = await getAllUserData()
-    setRecentScores(scores)
-  }
       
-  
+  // useEffect(() => {
+  //   const fetchRecentScores = async () => {
+  //     try {
+  //       const scores = await getAllUserData();
+  //       setRecentScores(scores);
+  //     } catch (e) {
+  //       console.log("Error fetching recent scores:", e);
+  //     }
+  //   };
+
+  //   fetchRecentScores();
+  // }, []);
 
 
   return (
@@ -74,6 +74,7 @@ const HomeScreen = ({navigation}) => {
             <Text style={styles.statsText}>BR 6.7</Text>
           </View>
         </View>
+        {/* //////////////////////Lower Section////////////////////////////////// */}
         <Text style={styles.scoresTitle}>Recent Scores</Text>
         <View style={styles.scoresContainer}>
           
@@ -83,34 +84,15 @@ const HomeScreen = ({navigation}) => {
               <Text style={styles.tableHeaderText}>Battle Type</Text>
               <Text style={styles.tableHeaderText}>Score</Text>
             </View>
-            {/* {recentScores.map((score, index) => {
-              <View key={index} style={styles.tableRow}>
-                <Text style={styles.tableCell}>{score.battleRating}</Text>
-                <Text style={styles.tableCell}>{score.battleType}</Text>
-                <Text style={styles.tableCell}>{score.score}</Text>
-              </View>
-            })} */}
-            {recentScores != [] ? (
-              recentScores.map((homeData, index) => (
-                <HomeTableCard homeData={homeData} key={homeData.id}/>
+            
+            {recentScores.length > 0 ? (
+              recentScores.map((score, index) => index < 1 && (
+                <HomeTableCard homeData={score} key={score.id}/>
               ))
             ): null}
           </View>
         </View>
 
-        {/* //////////////////////Lower Section////////////////////////////////// */}
-        {/* <TouchableOpacity style={styles.homeNav}>
-          <Image source={require('../assets/icons/ribbon.png')} style={styles.navIcon}/>
-          <Text style={styles.homeNavText}>Battle Pass</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.homeNav}>
-          <Image source={require('../assets/icons/Leaderboard.png')} style={styles.navIcon}/>
-          <Text style={styles.homeNavText}>Leaderboard</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.homeNav}>
-          <Image source={require('../assets/icons/addNew.png')} style={styles.navIcon}/>
-          <Text style={styles.homeNavText}>Add New Score</Text>
-        </TouchableOpacity> */}
         {/* //////////////////////Lower Section END////////////////////////////////// */}
 
       </ImageBackground>
@@ -199,30 +181,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         margin: 15,
       },
-      // homeNav: {
-      //   width: '85%',
-      //   flexDirection: 'row',
-      //   alignItems: 'center',
-      //   backgroundColor: '#171717',
-      //   padding: 12,
-      //   borderRadius: 10,
-      //   marginBottom: 15,
-      //   alignSelf: 'center',
-      //   borderColor: '#E53935',
-      //   borderWidth: 1,
-      // },
-      // navIcon: {
-      //   height: 30,
-      //   width: 30
-      // },
-      // homeNavText: {
-      //   color: 'white',
-      //   fontSize: 24,
-      //   marginLeft: 10,
-      //   fontWeight: '400',
-        
-      // },
-
       scoresContainer: {
         width: '85%',
         alignSelf: 'center',

@@ -28,8 +28,10 @@ const HomeTableCard = (props) => {
                 const scoreData = []
 
                 querySnapshot.forEach((doc) => {
-                    scoreData.push(doc.data())
+                    scoreData.push({ ...doc.data(), id: doc.id });
                     console.log("Current score: ", doc.data());
+                    // scoreData.push(doc.data())
+                    // console.log("Current score: ", doc.data());
                 })
                 setTableData(scoreData)
             })
@@ -56,7 +58,7 @@ const HomeTableCard = (props) => {
             </View>
         </View>
     )
-}
+} 
 
 export default HomeTableCard
 

@@ -14,35 +14,7 @@ import NewScoreScreen from './Screens/NewScoreScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getCurrentUserData } from './services/FirestoreService';
 
-
-
-// const Stack = createNativeStackNavigator();
-
-// const getSignedIn = () => {
-//   const [ loggedIn, setLoggedIn ] = useState(false);
-
-//   useEffect(() => {
-//     const unsubscribe = onAuthStateChanged( auth, (user) => {
-//       if (user) {
-//         setLoggedIn(true);
-//         console.log("<== Current user Logged In ==> " + user.email)
-//       } else {
-//         setLoggedIn(false);
-//         console.log("==> No Users Logged In <==")
-//       }
-//     })
-//     return unsubscribe
-//   }, [])
-
-//   return loggedIn
-// }
-
-// const Tab = createBottomTabNavigator()
-
 const Stack = createNativeStackNavigator();
-
-//////////////////////////////////////////////////// |              | //////////////////////////////////////////////////
-//////////////////////////////////////////////////// V Experimental V //////////////////////////////////////////////////
 
 const useAuthState = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -50,27 +22,20 @@ const useAuthState = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setLoggedIn(!!user);
-      // console.log(user ? `<== Current user Logged In ==> ${user.email}` : "==> No Users Logged In <==");
     });
     return unsubscribe;
   }, []);
 
   return loggedIn;
 };
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Tab = createBottomTabNavigator();
 
 export default function App() {
 
-  // const isSignedIn = getSignedIn();
-  //////////////////////////////////////////////////// | ///////////  | //////////////////////////////////////////////////
-  //////////////////////////////////////////////////// V Experimental V //////////////////////////////////////////////////
   const isSignedIn = useAuthState();
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     if (isSignedIn) {
       getCurrentUserData().then(userData => {
-        // console.log("Current User Data: ", userData);
       });
     }
   }, [isSignedIn]);
