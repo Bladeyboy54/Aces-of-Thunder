@@ -23,7 +23,7 @@
     <a href="Maybe">Request Feature</a>
   </p>
   <br />
-  <p> ===> By Bladen Lehnberg <=== </p>
+  <p>  By Bladen Lehnberg  </p>
 </div>
 
 
@@ -178,29 +178,9 @@ Here is an image of how the Database is structured and how each collection relat
 
 ## Conclusion
 Aces of Thunder enhances the War Thunder experience by providing a platform for players to track their scores, compete, and engage with the community. Its features provide a smooth and engaging user experience, which includes real-time leaderboards, secure user authentication, and a dynamic user interface. The application provides a competitive and social environment by integrating Firebase for data management and providing dynamic event participation. Aces of Thunder is a good example of how gaming and community involvement can be combined, with the goal of enhancing enjoyment and unity among War Thunder fans.
-### License
 
-MIT License
-
-Copyright © 2024 Bladen Lehnberg
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## Licence 
+Distributed under the MIT License. See LICENSE.txt for more information.
 
 
 
